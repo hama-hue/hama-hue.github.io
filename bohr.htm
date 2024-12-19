@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bohr Model Calculator</title>
+			
+</head>
+<body style = "color: white; background-color: black; text-align: center;">
+    <h1><em>Bohr Model Calculator</em></h1>
+
+    <label for="property">Select Property:</label>
+    <select id="property">
+        <option value="radius">Radius of Orbit</option>
+        <option value="velocity">Velocity of Electron</option>
+			  <option value="kineticEnergy">Kinetic Energy</option>
+			  <option value="potentialEnergy">Potential Energy</option>
+        <option value="totalEnergy">Total Energy</option>
+			  <option value="momentum">Angular Momentum</option>
+			  <option value="n">Number of Electrons</option>
+    </select>
+
+    <br><br>
+
+    <label for="atomicNumber">Atomic Number<em> (Z)</em>:</label>
+    <input type="number" min = "1" oninput="validity.valid||(value='');" id="atomicNumber">
+    
+    <br><br>
+
+	  <label for="orbitNumber">Orbit Number <em>(n)</em>:</label>
+    <input type="number" min = "1" oninput="validity.valid||(value='');" id="orbitNumber">
+
+    <br><br>
+    
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="result"></div>
+
+    <script>
+        function calculate() {
+            const property = document.getElementById('property').value;
+            const atomicNumber = parseInt(document.getElementById('atomicNumber').value);
+            const orbitNumber = parseInt(document.getElementById('orbitNumber').value);
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Clear previous results
+
+            // Constants
+            const bohrRadius = 0.529177; // angestrom
+            const electronCharge = 1.602176634e-19; // Coulomb
+            const electronMass = 9.10938356e-31; // kg
+            const planckConstant = 6.62607015e-34; // J s
+
+            // Calculations
+            const radius = bohrRadius * orbitNumber * orbitNumber / atomicNumber;
+            const velocity = 2.18e6 * atomicNumber / orbitNumber;
+					  const totalEnergy = -13.6 * (atomicNumber ** 2) /(orbitNumber ** 2);
+            const kineticEnergy = - totalEnergy;
+            const potentialEnergy = 2 * totalEnergy;
+					  const momentum = orbitNumber * planckConstant / (2 * Math.PI)
+						const n = 2 * (orbitNumber)**2
+            
+
+            let result;
+            let steps = [];
+
+            switch (property) {
+                case 'radius':
+                    result = `Radius of the orbit: ${radius * 1e-10} meters`;
+                    steps.push(`Radius = ${bohrRadius} * (n ** 2) / Z`);
+								    steps.push(`Radius = ${bohrRadius} * ${orbitNumber}^2 / ${atomicNumber}`);
+                    steps.push(`Radius = ${radius} Angstrom`);
+								    steps.push(`Radius = ${radius * 1e-10} meters`);
+                    break;
+                case 'velocity':
+                    result = `Velocity of the electron: ${velocity} m/s`;
+								    steps.push(`Velocity = 2.18e6 * Z / n`);
+                    steps.push(`Velocity = 2.18e6 * ${atomicNumber} / ${orbitNumber}`);
+                    steps.push(`Velocity = ${velocity} m/s`);
+                    break;
+								case 'kineticEnergy':
+								    result = `Kinetic energy of the orbit: ${kineticEnergy} eV`;
+								    steps.push(`Total Energy = -13.6 * (Z ** 2) / (n **2)`);
+								    steps.push(`Total Energy = -13.6 * ${atomicNumber ** 2} / ${orbitNumber ** 2}`);
+								    steps.push(`Kinetic Energy = - Total Energy`);
+								    steps.push(`Kinetic Energy = ${kineticEnergy} eV`);
+								    break;
+								case 'potentialEnergy':
+								    result = `Potential energy of the orbit: ${potentialEnergy} eV`;
+								    steps.push(`Total Energy = -13.6 * (Z ** 2) /(n ** 2)`);
+								    steps.push(`Total Energy = -13.6 * (${atomicNumber} ** 2) /(${orbitNumber} ** 2)`);
+								    steps.push(`Potential Energy = 2 * Total Energy`);
+								    steps.push(`Potential Energy = ${potentialEnergy} eV`);
+								    break;
+                case 'totalEnergy':
+                    result = `Total energy of the orbit: ${totalEnergy} eV`;
+								    steps.push(`Total Energy = -13.6 * (Z ** 2) /(n ** 2`);
+								    steps.push(`Total Energy = -13.6 * (${atomicNumber} ** 2) /(${orbitNumber} ** 2`);
+                    steps.push(`Total Energy = ${totalEnergy} eV`);
+                    break;
+								case 'momentum':
+                    result = `Angular Momentum of the orbit: ${momentum} Js `;
+								    steps.push(`Angular Momentum = n * h / (2 * π)`);
+								    steps.push(`Angular Momentum = ${orbitNumber} * ${planckConstant} / (2 * ${Math.PI})`);
+                    steps.push(`Angular Momentum = ${momentum} Js`);
+                    break;
+								case 'n':
+                    result = `Number of electron in ${orbitNumber} orbit: ${n} `;
+								    steps.push(`Number of electrons = 2 * (n ** 2)`);
+								    steps.push(`Number of electrons = 2 * ${orbitNumber} ** 2`);
+                    steps.push(`Number of electrons = ${n}`);
+                    break;
+                default:
+                    result = "Invalid property selected.";
+            }
+
+            resultDiv.innerHTML += `<h2>Result:</h2><p>${result}</p>`;
+            resultDiv.innerHTML += `<h2>Step-by-Step Solution:</h2>`;
+            steps.forEach(step => {
+                resultDiv.innerHTML += `<p>${step}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
